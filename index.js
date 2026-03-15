@@ -52,6 +52,10 @@ server.listen(process.env.PORT || 3000, () => {
   console.log('✅ HTTP server alive on port', process.env.PORT || 3000);
 });
 
+// ── Debug ──
+console.log('TOKEN exists:', !!process.env.TOKEN);
+console.log('CLIENT_ID exists:', !!process.env.CLIENT_ID);
+
 // ── Login last ──
 client.login(process.env.TOKEN).catch(err => {
   console.error('❌ Login failed:', err.message);
