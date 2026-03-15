@@ -1,5 +1,6 @@
 require('dotenv').config();
 const { Client, GatewayIntentBits, Collection, REST, Routes } = require('discord.js');
+const http = require('http');
 const setupCommand = require('./commands/setup');
 
 const client = new Client({
@@ -9,7 +10,6 @@ const client = new Client({
 client.commands = new Collection();
 client.commands.set(setupCommand.data.name, setupCommand);
 
-// Register slash commands on startup
 client.once('ready', async () => {
   console.log(`✅ Logged in as ${client.user.tag}`);
 
@@ -45,3 +45,13 @@ client.on('interactionCreate', async (interaction) => {
 });
 
 client.login(process.env.TOKEN);
+
+// ── Keep Render Web Service alive ──
+const server = http.createServer((req, res) => {
+  res.writeHead(200);
+  res.end('Bot is running!');
+});
+
+server.listen(process.env.PORT || 3000, () => {
+  console.log('✅ HTTP server alive on port', process.env.PORT || 3000);
+});
