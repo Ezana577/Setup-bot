@@ -32,10 +32,8 @@ client.once('ready', async () => {
 
 client.on('interactionCreate', async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
-
   const command = client.commands.get(interaction.commandName);
   if (!command) return;
-
   try {
     await command.execute(interaction);
   } catch (error) {
@@ -43,8 +41,6 @@ client.on('interactionCreate', async (interaction) => {
     await interaction.reply({ content: '❌ An error occurred.', ephemeral: true });
   }
 });
-
-client.login(process.env.TOKEN);
 
 // ── Keep Render Web Service alive ──
 const server = http.createServer((req, res) => {
@@ -54,4 +50,9 @@ const server = http.createServer((req, res) => {
 
 server.listen(process.env.PORT || 3000, () => {
   console.log('✅ HTTP server alive on port', process.env.PORT || 3000);
+});
+
+// ── Login last ──
+client.login(process.env.TOKEN).catch(err => {
+  console.error('❌ Login failed:', err.message);
 });
